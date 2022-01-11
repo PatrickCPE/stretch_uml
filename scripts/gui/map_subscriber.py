@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import time
 import sys
@@ -27,6 +27,7 @@ class MapConverter:
 def main(args):
     map_converter = MapConverter()
     rospy.init_node('map_converter', anonymous=True)
+    rospy.loginfo("Map Subscriber Initialized")
     try:
         rospy.spin()
     except KeyboardInterrupt:
