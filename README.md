@@ -1,3 +1,5 @@
+[Click Here to View Documentation](https://stretch-uml.readthedocs.io/en/latest/)
+
 # TODO
 * Translate relative point on pgm to coordinate frame
 * Relative file path for images
@@ -10,7 +12,7 @@ sudo apt-get install python3-pyqt5
 sudo apt-get install qtcreator pyqt5-dev-tools
 sudo apt-get install qttools5-dev-tools
 
-cd stretch_gui
+cd stretch_uml
 pip3 install -r requirements.txt
 
 # ROS Noetic must be installed. Instructions for this are beyond scope.
