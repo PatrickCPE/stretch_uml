@@ -1,15 +1,8 @@
 # TODO
-Look at TODOs in code
-* Implement subscriber that updates the local map .pgm file every # seconds
 * Translate relative point on pgm to coordinate frame
-* Image Selection Dot Code
-* Replace Default Images with Loading/Please Wait
-* Wrap up integration of all the controls
-* Fix text colors where needed
-* Draw a dot for strech on the map
-
-# Notes
-* Map image is called map.pgm and it is in the scripts folder of the project
+* Relative file path for images
+* Camera move subscriber
+* Map image to map location translation
 
 # Requirements
 ```shell
@@ -23,9 +16,9 @@ pip3 install -r requirements.txt
 # ROS Noetic must be installed. Instructions for this are beyond scope.
 ```
 
-# Editing Code and Interface
+# Editing GUI Interface
 ```shell
-cd stretch_gui
+cd stretch_uml/scripts/gui/
 # Launch QT Designer
 designer
 # Open .ui file. Save edits when complete
@@ -37,5 +30,47 @@ pyuic5 -x stretch.ui -o stretch_ui_main_window.py
 # Shell 1
 roscore
 # Shell 2
-python stretch_main_window.py
+rosrun stretch_uml stretch_main_window.py
+# Shell 3
+rosrun stretch_uml map_subscriber
 ```
+
+### Building Docs
+```shell
+$ cd stretch_uml/docs
+$ make clean # If needed
+$ make html
+$ xdg-open build/html/index.html # Open it in a browser
+```
+
+### Updating Docs
+```shell
+$ cd stretch_uml/docs
+$ sphinx-apidoc ../scripts/PACKAGENAME -o source/modules
+$ cd source/modules
+$ vim modules.rst
+# Add the new .rst files name to the modules.rst file as shown
+$ cd ..
+$ vim conf.py
+# append the syspath for any new module added as shown
+```
+
+* Warning about duplicate contents is fine as long as it looks correct
+* Warning about document or segment not beginning with a transition is fine as long as it looks correct
+
+### Docs Initial Setup
+```shell
+$ cd stretch_uml
+$ mkdir docs
+$ cd docs
+$ sphinx-quickstart
+$ mkdir source
+$ cd source
+$ mkdir modules
+$ sphinx-apidoc ../../scripts/PACKAGENAME -o modules
+```
+* Add required modules to the conf.py file
+* Edit conf.py to support .md
+* Change theme to desired and set code highlight color
+* Rerun apidoc and adjust modules.py by hand when updating
+* Warning about duplicate contents is fine as long as it looks correct
