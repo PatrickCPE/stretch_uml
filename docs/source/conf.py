@@ -39,6 +39,8 @@ extensions = [
 	'm2r2'
 ]
 
+autodoc_mock_imports = ['rospy', 'PyQt5', 'stretch_uml', 'stretch_ui_main_window']
+
 source_suffix = ['.rst', '.md']
 
 # Add any paths that contain templates here, relative to this directory.
