@@ -39,7 +39,7 @@ extensions = [
 	'm2r2'
 ]
 
-autodoc_mock_imports = ['rospy', 'PyQt5', 'stretch_uml', 'stretch_ui_main_window']
+autodoc_mock_imports = ['rospy', 'stretch_uml', 'stretch_ui_main_window', 'geometry_msgs']
 
 source_suffix = ['.rst', '.md']
 
