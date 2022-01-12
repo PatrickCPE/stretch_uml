@@ -1,4 +1,4 @@
-Scripts
+scripts
 =======
 
 .. toctree::
@@ -7,9 +7,8 @@ Scripts
    map_subscriber
    stretch_main_window
 
-
-Modules
-=======
+src
+===
 .. toctree::
    :maxdepth: 4
 
