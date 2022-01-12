@@ -37,6 +37,11 @@ class MapWorker(QThread):
         self.center = center
 
     def run(self):
+        """
+        Start map worker thread. Thread opens the current map image, zooms in on it, and saves it as map_zoomed.
+        map_zoomed is updated as the arrow keys are pressed to navigate it. Map will update whenever a new current_map
+        is written via the map_subscriber.
+        """
         self.thread_active = True
         while self.thread_active:
             cv_image = cv2.imread(current_map)
@@ -91,13 +96,18 @@ class MapWorker(QThread):
                 rospy.sleep(1)
 
     def stop(self):
+        """
+        Shutdown map worker cleanly
+        """
         self.thread_active = False
         self.quit()
 
 
 class VideoWorker(QThread):
     """
-    Takes video feed from system camera and displays. Any necessary rotations or zooms will be done here.
+    Takes video feed from system camera and displays it to the GUI. Video image is scaled to fit the GUI properly, and
+    the point selection occurs here. The selected_point is laid atop the final frame that it was selected in, and saved
+    to image_zoomed.
     """
     image_update = pyqtSignal(QImage)
 
@@ -108,6 +118,9 @@ class VideoWorker(QThread):
         self.image = cv2.imread(loading_icon)
 
     def run(self):
+        """
+        Start the video worker thread.
+        """
         self.thread_active = True
         self.capture = cv2.VideoCapture(0)
         while self.thread_active:
@@ -124,6 +137,9 @@ class VideoWorker(QThread):
         self.capture.release()
 
     def stop(self):
+        """
+        Close out the video worker thread cleanly
+        """
         self.thread_active = False
         self.quit()
 
@@ -166,23 +182,31 @@ class MainWindow:
 
     def show(self):
         """
-        Make QT instance visible.
+        Make QT instance visible to the user.
         """
         self.main_window.show()
 
     def go_to_page_1(self):
+        """
+        Change stack widget instance to show page 1 and call relevant setup functions
+        """
         self.ui.PagesStackedWidget.setCurrentWidget(self.ui.page_1)
-        # self.ui.MapLabelPage1 = QPixmap("map_zoomed.png")
         self.map_worker.start()
         self.video_worker.stop()
 
     def go_to_page_2(self):
+        """
+        Change stack widget instance to show page 2 and call relevant setup functions
+        """
         self.ui.CameraLabelPage2.setPixmap(QPixmap(loading_icon))
         self.ui.PagesStackedWidget.setCurrentWidget(self.ui.page_2)
         self.video_worker.start()
         self.map_worker.stop()
 
     def go_to_page_3(self):
+        """
+        Change stack widget instance to show page 3 and call relevant setup functions
+        """
         self.video_worker.stop()
         self.map_worker.stop()
         # Give the video a second to write the image
@@ -193,40 +217,52 @@ class MainWindow:
         self.ui.PagesStackedWidget.setCurrentWidget(self.ui.page_3)
 
     def video_frame_update(self, image):
+        """
+        Callback to update the video camera feed QPixmap widget
+        """
         self.ui.CameraLabelPage2.setPixmap(QPixmap.fromImage(image))
 
     def map_frame_update(self, updated_map):
+        """
+        Callback to update the map feed QPixmap widget
+        """
         self.ui.MapLabelPage1.setPixmap(updated_map)
 
     def page_1_up(self):
         """
-        Inverted control scheme
+        Shift the zoomed map image up
         """
         self.map_worker.center = (self.map_worker.center[0], self.map_worker.center[1] - 100)
         rospy.logdebug("page 1 up: current center={}".format(self.map_worker.center))
 
     def page_1_down(self):
         """
-        Inverted control scheme
+        Shift the zoomed map image down
         """
         self.map_worker.center = (self.map_worker.center[0], self.map_worker.center[1] + 100)
         rospy.logdebug("page 1 down: current center={}".format(self.map_worker.center))
 
     def page_1_left(self):
         """
-        Inverted control scheme
+        Shift the zoomed map image left
         """
         self.map_worker.center = (self.map_worker.center[0] - 100, self.map_worker.center[1])
         rospy.logdebug("page 1 left: current center={}".format(self.map_worker.center))
 
     def page_1_right(self):
         """
-        Inverted control scheme
+        Shift the zoomed map image right
         """
         self.map_worker.center = (self.map_worker.center[0] + 100, self.map_worker.center[1])
         rospy.logdebug("page 1 right: current center={}".format(self.map_worker.center))
 
     def publish_point(self, event):
+        """
+        Publish the point that was selected in the aspect ratio of the camera
+
+        publishes to: /selected_point
+        publish type: geometry_msgs.Point
+        """
         global selected_x, selected_y
         # X Scaling 960:640
         # Y Scaling 540:480
@@ -237,18 +273,30 @@ class MainWindow:
         self.go_to_page_3()
 
     def page_2_up(self):
+        """
+        Move the stretch head camera up
+        """
         # TODO Bind to Camera Driver
         rospy.logdebug("page 2 up")
 
     def page_2_down(self):
+        """
+        Move the stretch head camera down
+        """
         # TODO Bind to Camera Driver
         rospy.logdebug("page 2 down")
 
     def page_2_left(self):
+        """
+        Move the stretch head camera left
+        """
         # TODO Bind to Camera Driver
         rospy.logdebug("page 2 left")
 
     def page_2_right(self):
+        """
+        Move the stretch head camera right
+        """
         # TODO Bind to Camera Driver
         rospy.logdebug("page 2 right")
 
