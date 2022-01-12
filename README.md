@@ -1,16 +1,20 @@
+# Documentation
+[Click Here](https://stretch-uml.readthedocs.io/en/latest/)
+
 # TODO
 * Translate relative point on pgm to coordinate frame
-* Relative file path for images
 * Camera move subscriber
 * Map image to map location translation
 
 # Requirements
 ```shell
+git clone git@github.com:PatrickCPE/stretch_uml.git PATHTOCATKIN/catkin_ws/
+
 sudo apt-get install python3-pyqt5
 sudo apt-get install qtcreator pyqt5-dev-tools
 sudo apt-get install qttools5-dev-tools
 
-cd stretch_gui
+cd PATHTOCATKIN/catkin_ws/src/stretch_uml
 pip3 install -r requirements.txt
 
 # ROS Noetic must be installed. Instructions for this are beyond scope.
@@ -18,7 +22,7 @@ pip3 install -r requirements.txt
 
 # Editing GUI Interface
 ```shell
-cd stretch_uml/scripts/gui/
+cd stretch_uml/src/stretch_uml/
 # Launch QT Designer
 designer
 # Open .ui file. Save edits when complete
@@ -46,7 +50,8 @@ $ xdg-open build/html/index.html # Open it in a browser
 ### Updating Docs
 ```shell
 $ cd stretch_uml/docs
-$ sphinx-apidoc ../scripts/PACKAGENAME -o source/modules
+$ sphinx-apidoc ../scripts/FOLDERNAME -o source/modules
+$ sphinx-apidoc ../src/stretch_uml -o source/modules
 $ cd source/modules
 $ vim modules.rst
 # Add the new .rst files name to the modules.rst file as shown
