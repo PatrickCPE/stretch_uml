@@ -10,6 +10,8 @@ Welcome to Stretch UML's documentation!
    Patrick Hoey,
    Nathan Wright
 
+NOTE: The docs don't want to build properly for read the docs, sorry. Build it locally following the instructions below
+
 .. mdinclude:: ../../README.md
 
 .. toctree::
